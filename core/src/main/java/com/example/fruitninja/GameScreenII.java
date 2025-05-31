@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.example.fruitninja.managers.FruitManager;
+import com.example.fruitninja.objects.BladeObject;
 
 public class GameScreenII implements Screen {
     private final FruitNinjaGame game;
@@ -15,7 +16,7 @@ public class GameScreenII implements Screen {
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private FruitManager fruitManager;
-    private Blade blade;
+    private BladeObject blade;
 
     public GameScreenII(FruitNinjaGame game) {
         this.game = game;
@@ -30,7 +31,7 @@ public class GameScreenII implements Screen {
 
         // Инициализация менеджера фруктов и лезвия
         fruitManager = new FruitManager(world, game.batch);
-        blade = new Blade(game.batch);
+        blade = new BladeObject(game.batch);
 
         // Настройка обработки ввода
         Gdx.input.setInputProcessor(new InputHandler(blade));
@@ -48,7 +49,7 @@ public class GameScreenII implements Screen {
         // Рендеринг
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        fruitManager.render(delta);
+        fruitManager.render();
         blade.render();
         game.batch.end();
 

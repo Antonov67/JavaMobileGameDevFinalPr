@@ -25,8 +25,8 @@ public class GameObject {
     protected float radius;
     protected Sprite sprite;
     protected boolean isBomb;
-
     public short cBits;
+    protected boolean sliced = false;
 
     GameObject(FruitType type, int x, int y, World world, short cBits) {
 
@@ -117,12 +117,20 @@ public class GameObject {
         return (int) (body.getPosition().y / SCALE);
     }
 
-    public void setX(int x) {
-        body.setTransform(x * SCALE, body.getPosition().y, 0);
+    public void slice() {
+        if (!sliced) {
+            sliced = true;
+            // Здесь можно добавить эффект разрезания
+            // и создать два половинки фрукта
+        }
     }
 
-    public void setY(int y) {
-        body.setTransform(body.getPosition().x, y * SCALE, 0);
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
+
+    public float getRadius() {
+        return radius;
     }
 
     public void dispose() {

@@ -61,16 +61,17 @@ public class Fruit {
         }
     }
 
+
+    public boolean isOutOfScreen() {
+        return body.getPosition().y < -50 || body.getPosition().x < -50 || body.getPosition().x > 850;
+    }
+
     public void slice() {
         if (!sliced) {
             sliced = true;
             // Здесь можно добавить эффект разрезания
             // и создать два половинки фрукта
         }
-    }
-
-    public boolean isOutOfScreen() {
-        return body.getPosition().y < -50 || body.getPosition().x < -50 || body.getPosition().x > 850;
     }
 
     public Vector2 getPosition() {

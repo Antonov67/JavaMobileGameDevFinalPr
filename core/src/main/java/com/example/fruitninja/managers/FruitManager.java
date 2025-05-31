@@ -1,9 +1,10 @@
 package com.example.fruitninja.managers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.example.fruitninja.Blade;
+import com.example.fruitninja.objects.BladeObject;
 import com.example.fruitninja.GameSettings;
 import com.example.fruitninja.objects.BombObject;
 import com.example.fruitninja.objects.FruitObject;
@@ -47,29 +48,29 @@ public class FruitManager {
         }
     }
 
-    public void render(float delta) {
+    public void render() {
         for (GameObject gameObject : gameObjects) {
             gameObject.render(batch);
         }
     }
 
-    public void checkSlice(Blade blade) {
-//        if (!blade.isSlicing()) return;
-//
-//        Iterator<FruitObject> iter = fruits.iterator();
-//        while (iter.hasNext()) {
-//            FruitObject fruit = iter.next();
-//            if (blade.intersects(fruit.getPosition(), fruit.getRadius())) {
-//                if (fruit.isBomb()) {
-//                    // Взрыв бомбы
-//                    Gdx.app.log("Game", "Bomb hit! Game over!");
-//                } else {
-//                    // Разрезание фрукта
-//                    fruit.slice();
-//                    // Здесь можно добавить очки и эффекты
-//                }
-//            }
-//        }
+    public void checkSlice(BladeObject blade) {
+        if (!blade.isSlicing()) return;
+
+        Iterator<GameObject> iter = gameObjects.iterator();
+        while (iter.hasNext()) {
+            GameObject gameObject = iter.next();
+            if (blade.intersects(gameObject.getPosition(), gameObject.getRadius())) {
+                if (gameObject.isBomb()) {
+                    // Взрыв бомбы
+                    Gdx.app.log("Game", "Bomb hit! Game over!");
+                } else {
+                    // Разрезание фрукта
+                    gameObject.slice();
+                    // Здесь можно добавить очки и эффекты
+                }
+            }
+        }
     }
 
     private void spawnRandomGameObject() {

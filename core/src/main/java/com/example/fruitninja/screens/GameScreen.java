@@ -4,21 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.example.fruitninja.FruitNinjaGame;
+import com.example.fruitninja.InputHandler;
 import com.example.fruitninja.managers.BackgroundManager;
 import com.example.fruitninja.managers.FruitManager;
+import com.example.fruitninja.objects.BladeObject;
 
 public class GameScreen extends ScreenAdapter {
 
     private FruitNinjaGame fruitNinjaGame;
     private FruitManager fruitManager;
     private BackgroundManager backgroundManager;
+    private BladeObject blade;
+
 
 
     public GameScreen(FruitNinjaGame fruitNinjaGame) {
 
         this.fruitNinjaGame = fruitNinjaGame;
+
         fruitManager = new FruitManager(fruitNinjaGame.world, fruitNinjaGame.batch);
+
+        blade = new BladeObject(fruitNinjaGame.batch);
+
         backgroundManager = new BackgroundManager();
+
+        // Настройка обработки ввода
+        Gdx.input.setInputProcessor(new InputHandler(blade));
     }
 
     @Override
@@ -35,14 +46,16 @@ public class GameScreen extends ScreenAdapter {
 
         // Рендеринг
         fruitNinjaGame.batch.setProjectionMatrix(fruitNinjaGame.camera.combined);
+
         fruitNinjaGame.batch.begin();
+
         backgroundManager.render(fruitNinjaGame.batch);
-        fruitManager.render(delta);
-      //  blade.render();
+
+        fruitManager.render();
+
         fruitNinjaGame.batch.end();
-
-
-
+        //отрисовка лезвия после завершения отрисовки фона и фруктов
+        blade.render();
     }
 
     private void update(float delta) {
@@ -51,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
 
         // Обновление фруктов и проверка столкновений
         fruitManager.update(delta);
-       // fruitManager.checkSlice(blade);
+        fruitManager.checkSlice(blade);
 
         // Обновление камеры
         fruitNinjaGame.camera.update();
@@ -59,6 +72,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        fruitNinjaGame.dispose();
         backgroundManager.dispose();
         fruitManager.dispose();
     }
