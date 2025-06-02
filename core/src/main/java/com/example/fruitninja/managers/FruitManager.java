@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.example.fruitninja.objects.BladeObject;
 import com.example.fruitninja.GameSettings;
+import com.example.fruitninja.objects.BladeObject;
 import com.example.fruitninja.objects.BombObject;
 import com.example.fruitninja.objects.FruitObject;
-import com.example.fruitninja.objects.FruitType;
 import com.example.fruitninja.objects.GameObject;
+import com.example.fruitninja.objects.GameObjectType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,11 +38,11 @@ public class FruitManager {
         // Удаление фруктов за пределами экрана
         Iterator<GameObject> iter = gameObjects.iterator();
         while (iter.hasNext()) {
-            GameObject fruit = iter.next();
-            fruit.update(delta);
-            if (fruit.isOutOfScreen()) {
-                System.out.println("count" + gameObjects.size());
-                fruit.dispose();
+            GameObject gameObject = iter.next();
+            gameObject.update(delta);
+            if (gameObject.isOutOfScreen()) {
+                Gdx.app.log("Game", "gameObjects count on Screen: " + gameObjects.size());
+                gameObject.dispose();
                 iter.remove();
             }
         }
@@ -63,27 +63,31 @@ public class FruitManager {
             if (blade.intersects(gameObject.getPosition(), gameObject.getRadius())) {
                 if (gameObject.isBomb()) {
                     // Взрыв бомбы
-                    Gdx.app.log("Game", "Bomb hit! Game over!");
+                    Gdx.app.log("Game", "Bomb hit! Game over!" + gameObject.getTexture().toString());
                 } else {
                     // Разрезание фрукта
                     gameObject.slice();
+                    Gdx.app.log("Game", "Fruit hit!" + gameObject.getTexture().toString());
                     // Здесь можно добавить очки и эффекты
                 }
+                iter.remove();
+                gameObject.destroy(world);
             }
         }
     }
 
     private void spawnRandomGameObject() {
-        int x = (int) (Math.random() * GameSettings.SCREEN_WIDTH / GameSettings.SCALE);
-        int y = -50;
+        //int x = (int) (Math.random() * GameSettings.SCREEN_WIDTH / GameSettings.SCALE);
+        int x = (int) (Math.random() * GameSettings.SCREEN_WIDTH);
+        int y = 50;
 
-        // 20% chance to spawn a bomb
+        // 5%  - это спаун бомб
         if (Math.random() < 0.2) {
-            gameObjects.add(new BombObject(FruitType.BOMB, x, y, world, GameSettings.BOMB_BIT));
+            gameObjects.add(new BombObject(GameObjectType.BOMB, x, y, world, GameSettings.BOMB_BIT));
         } else {
-            // Random fruit type
-            FruitType[] types = FruitType.values();
-            FruitType type = types[(int) (Math.random() * types.length)];
+            // выберем случайный фрукт
+            GameObjectType[] types = GameObjectType.allExcept(GameObjectType.BOMB);
+            GameObjectType type = types[(int) (Math.random() * types.length)];
             gameObjects.add(new FruitObject(type, x, y, world, GameSettings.FRUIT_BIT));
         }
     }

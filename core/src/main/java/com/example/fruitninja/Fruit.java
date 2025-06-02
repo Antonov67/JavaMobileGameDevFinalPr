@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.example.fruitninja.objects.FruitType;
+import com.example.fruitninja.objects.GameObjectType;
 
 public class Fruit {
     protected Sprite sprite;
@@ -15,7 +15,7 @@ public class Fruit {
     protected boolean isBomb = false;
     private World world;
 
-    public Fruit(World world, FruitType type, float x, float y) {
+    public Fruit(World world, GameObjectType type, float x, float y) {
         this.radius = type.radius;
         this.world = world;
 

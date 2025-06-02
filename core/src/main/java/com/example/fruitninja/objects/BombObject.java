@@ -1,12 +1,26 @@
 package com.example.fruitninja.objects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
-import com.example.fruitninja.Fruit;
 
 public class BombObject extends GameObject {
 
-    public BombObject(FruitType type, int x, int y, World world, short cBits) {
+
+    public BombObject(GameObjectType type, int x, int y, World world, short cBits) {
         super(type, x, y, world, cBits);
         this.isBomb = true;
+    }
+
+    public void render(SpriteBatch batch) {
+        if (!sliced) {
+            sprite.draw(batch);
+        }
+    }
+
+    public void slice() {
+        if (!sliced) {
+            sliced = true;
+            // Здесь можно добавить эффект взрыва
+        }
     }
 }

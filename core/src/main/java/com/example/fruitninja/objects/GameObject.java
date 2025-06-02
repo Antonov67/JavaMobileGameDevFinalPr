@@ -1,6 +1,5 @@
 package com.example.fruitninja.objects;
 
-import static com.example.fruitninja.GameSettings.SCALE;
 import static com.example.fruitninja.GameSettings.maxAngularVelocity;
 import static com.example.fruitninja.GameSettings.minAngularVelocity;
 
@@ -28,7 +27,11 @@ public class GameObject {
     public short cBits;
     protected boolean sliced = false;
 
-    GameObject(FruitType type, int x, int y, World world, short cBits) {
+    public Texture getTexture() {
+        return texture;
+    }
+
+    GameObject(GameObjectType type, int x, int y, World world, short cBits) {
 
         this.radius = type.radius;
         this.width = (int) (radius * 2);
@@ -45,10 +48,6 @@ public class GameObject {
     }
 
 
-    public void draw(SpriteBatch batch) {
-        batch.draw(texture, getX() - (width / 2f), getY() - (height / 2f), width, height);
-    }
-
     public boolean isBomb() {
         return isBomb;
     }
@@ -57,16 +56,18 @@ public class GameObject {
     private Body createBody(float x, float y, World world) {
         BodyDef def = new BodyDef();
         def.type = BodyDef.BodyType.DynamicBody;
+        def.position.set(x, y);
         def.fixedRotation = false;
         Body body = world.createBody(def);
 
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(Math.max(width, height) * SCALE / 2f);
+        //circleShape.setRadius(Math.max(width, height) * SCALE / 2f);
+        circleShape.setRadius(radius);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
-        fixtureDef.density = 0.1f;
-        fixtureDef.friction = 1f;
+        fixtureDef.density = 0.05f;
+        fixtureDef.friction = 0.4f;
         fixtureDef.restitution = 0.3f;
         fixtureDef.filter.categoryBits = cBits;
 
@@ -75,19 +76,22 @@ public class GameObject {
         circleShape.dispose();
 
         // Применение случайного импульса
-        float impulseX = (float) (Math.random() * 500 + 200);
-        float impulseY = (float) (Math.random() * 1000 + 400);
+        float impulseX = (float) (Math.random() * 500 + 100);
+        float impulseY = (float) (Math.random() * 1000 + 100);
 
-        if (x > GameSettings.SCREEN_WIDTH / 2 / SCALE) {
+//        if (x > GameSettings.SCREEN_WIDTH / 2 / SCALE) {
+        if (x > GameSettings.SCREEN_WIDTH / 2) {
             impulseX = -impulseX;
         }
-        body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
+        //body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
+        body.setLinearVelocity(new Vector2(impulseX, impulseY));
 
         //случайное направление и скорость вращения фрукта
         body.setAngularVelocity(MathUtils.random(minAngularVelocity, maxAngularVelocity));
 
 
-        body.setTransform(x * SCALE, y * SCALE, 0);
+        //body.setTransform(x * SCALE, y * SCALE, 0);
+       // body.setTransform(x, y, 0);
         return body;
     }
 
@@ -106,15 +110,18 @@ public class GameObject {
     }
 
     public boolean isOutOfScreen() {
-        return getX() < -radius || getX() > GameSettings.SCREEN_WIDTH / SCALE || getY() < -radius;
+        //return getX() < -radius || getX() > GameSettings.SCREEN_WIDTH / SCALE || getY() < -radius;
+        return getX() < -radius || getX() > GameSettings.SCREEN_WIDTH + radius || getY() < -radius;
     }
 
     public int getX() {
-        return (int) (body.getPosition().x / SCALE);
+       // return (int) (body.getPosition().x / SCALE);
+        return (int) (body.getPosition().x);
     }
 
     public int getY() {
-        return (int) (body.getPosition().y / SCALE);
+       // return (int) (body.getPosition().y / SCALE);
+        return (int) (body.getPosition().y);
     }
 
     public void slice() {
@@ -135,5 +142,9 @@ public class GameObject {
 
     public void dispose() {
         texture.dispose();
+    }
+
+    public void destroy(World world){
+        world.destroyBody(body);
     }
 }

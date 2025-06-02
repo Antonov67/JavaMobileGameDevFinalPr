@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class FruitObject extends GameObject {
-    protected boolean sliced = false;
 
-    public FruitObject(FruitType type, int x, int y, World world, short cBits) {
+    public FruitObject(GameObjectType type, int x, int y, World world, short cBits) {
         super(type, x, y, world, cBits);
-        this.isBomb = true;
+        this.isBomb = false;
     }
 
 

@@ -73,7 +73,7 @@ public class BladeObject {
     }
 
     public boolean intersects(Vector2 center, float radius) {
-        if (points.size < 2 || !slicing) return false;
+        if (points.size < 2) return false;
 
         for (int i = 0; i < points.size - 1; i++) {
             Vector2 p1 = points.get(i);
@@ -89,18 +89,33 @@ public class BladeObject {
     }
 
     private boolean intersectsLineCircle(Vector2 p1, Vector2 p2, Vector2 center, float radius) {
-        Vector2 lineDir = new Vector2(p2).sub(p1);
-        Vector2 toCenter = new Vector2(center).sub(p1);
+        Vector2 d = new Vector2(p2).sub(p1);
+        Vector2 f = new Vector2(center).sub(p1);
 
-        float lineLength = lineDir.len();
-        lineDir.nor();
+        // Квадрат длины отрезка
+        float a = d.dot(d);
+        // Проекция вектора f на d (умноженная на 2)
+        float b = 2 * f.dot(d);
+        // Квадрат длины вектора f минус квадрат радиуса
+        float c = f.dot(f) - radius * radius;
 
-        float projection = toCenter.dot(lineDir);
-        projection = Math.max(0, Math.min(lineLength, projection));
+        // Дискриминант квадратного уравнения
+        float discriminant = b * b - 4 * a * c;
 
-        Vector2 closestPoint = new Vector2(p1).mulAdd(lineDir, projection);
+        // Если дискриминант отрицательный - нет пересечений
+        if (discriminant < 0) {
+            return false;
+        }
 
-        return closestPoint.dst(center) <= radius;
+        // Иначе ищем точки пересечения
+        discriminant = (float) Math.sqrt(discriminant);
+
+        // Решения квадратного уравнения
+        float t1 = (-b - discriminant) / (2 * a);
+        float t2 = (-b + discriminant) / (2 * a);
+
+        // Если хотя бы одно решение в диапазоне [0,1] - есть пересечение с отрезком
+        return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
     }
 
     public boolean isSlicing() {
