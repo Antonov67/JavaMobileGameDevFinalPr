@@ -6,29 +6,46 @@ import static com.example.fruitninja.GameSettings.VELOCITY_ITERATIONS;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.example.fruitninja.screens.GameScreen;
+import com.example.fruitninja.screens.MenuScreen;
 
 public class FruitNinjaGame extends Game {
     public SpriteBatch batch;
     public World world;
+    public BitmapFont largeWhiteFont;
+    public BitmapFont commonWhiteFont;
+    public BitmapFont commonBlackFont;
     public OrthographicCamera camera;
     float accumulator = 0;
+    public GameScreen gameScreen;
+    public MenuScreen menuScreen;
+    public Vector3 touch;
 
     @Override
     public void create() {
         Box2D.init();
         world = new World(new Vector2(0, -9.8f), true);
 
+        largeWhiteFont = FontBuilder.generate(48, Color.WHITE, GameResources.GAME_FONT);
+        commonWhiteFont = FontBuilder.generate(24, Color.WHITE, GameResources.GAME_FONT);
+        commonBlackFont = FontBuilder.generate(24, Color.BLACK, GameResources.GAME_FONT);
+
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, GameSettings.SCREEN_WIDTH, GameSettings.SCREEN_HEIGHT);
 
-        setScreen(new GameScreen(this));
+        gameScreen = new GameScreen(this);
+        menuScreen = new MenuScreen(this);
+
+        setScreen(menuScreen);
     }
 
     @Override
