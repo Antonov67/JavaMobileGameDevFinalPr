@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.example.fruitninja.FruitNinjaGame;
 import com.example.fruitninja.InputHandler;
 import com.example.fruitninja.managers.BackgroundManager;
-import com.example.fruitninja.managers.FruitManager;
+import com.example.fruitninja.managers.GameObjectManager;
 import com.example.fruitninja.objects.BladeObject;
 
 public class GameScreen extends ScreenAdapter {
 
     private FruitNinjaGame fruitNinjaGame;
-    private FruitManager fruitManager;
+    private GameObjectManager gameObjectManager;
     private BackgroundManager backgroundManager;
     private BladeObject blade;
 
@@ -22,7 +22,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.fruitNinjaGame = fruitNinjaGame;
 
-        fruitManager = new FruitManager(fruitNinjaGame.world, fruitNinjaGame.batch);
+        gameObjectManager = new GameObjectManager(fruitNinjaGame.world, fruitNinjaGame.batch);
 
         blade = new BladeObject(fruitNinjaGame.batch);
 
@@ -51,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
 
         backgroundManager.render(fruitNinjaGame.batch);
 
-        fruitManager.render();
+        gameObjectManager.render();
 
         fruitNinjaGame.batch.end();
         //отрисовка лезвия после завершения отрисовки фона и фруктов
@@ -63,8 +63,8 @@ public class GameScreen extends ScreenAdapter {
         fruitNinjaGame.stepWorld();
 
         // Обновление фруктов и проверка столкновений
-        fruitManager.update(delta);
-        fruitManager.checkSlice(blade);
+        gameObjectManager.update(delta);
+        gameObjectManager.checkSlice(blade);
 
         // Обновление камеры
         fruitNinjaGame.camera.update();
@@ -74,6 +74,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         fruitNinjaGame.dispose();
         backgroundManager.dispose();
-        fruitManager.dispose();
+        gameObjectManager.dispose();
+        blade.dispose();
     }
 }

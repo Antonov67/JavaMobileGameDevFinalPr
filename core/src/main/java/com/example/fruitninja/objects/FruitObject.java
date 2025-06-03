@@ -10,18 +10,9 @@ public class FruitObject extends GameObject {
         this.isBomb = false;
     }
 
-
-    public void render(SpriteBatch batch) {
-        if (!sliced) {
-            sprite.draw(batch);
-        }
+    public FruitObject(String texturePath, float radius, int x, int y, World world, short cBits) {
+        super(texturePath, radius, x, y, world, cBits);
+        this.isBomb = false;
     }
 
-    public void slice() {
-        if (!sliced) {
-            sliced = true;
-            // Здесь можно добавить эффект разрезания
-            // и создать два половинки фрукта
-        }
-    }
 }

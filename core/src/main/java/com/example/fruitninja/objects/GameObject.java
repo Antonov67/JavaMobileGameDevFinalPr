@@ -26,6 +26,7 @@ public class GameObject {
     protected boolean isBomb;
     public short cBits;
     protected boolean sliced = false;
+    protected GameObjectType type;
 
     public Texture getTexture() {
         return texture;
@@ -33,6 +34,7 @@ public class GameObject {
 
     GameObject(GameObjectType type, int x, int y, World world, short cBits) {
 
+        this.type = type;
         this.radius = type.radius;
         this.width = (int) (radius * 2);
         this.height = (int) (radius * 2);
@@ -47,11 +49,29 @@ public class GameObject {
         body = createBody(x, y, world);
     }
 
+    public GameObject(String texturePath, float radius, int x, int y, World world, short cBits) {
+        this.radius = radius;
+        this.width = (int) (radius * 2);
+        this.height = (int) (radius * 2);
+        this.cBits = cBits;
+
+        // Создание спрайта
+        sprite = new Sprite(new Texture(texturePath));
+        sprite.setSize(radius * 2, radius * 2);
+        sprite.setOrigin(radius, radius);
+
+        texture = new Texture(texturePath);
+        body = createBody(x, y, world);
+    }
+
 
     public boolean isBomb() {
         return isBomb;
     }
 
+    public GameObjectType getType() {
+        return type;
+    }
 
     private Body createBody(float x, float y, World world) {
         BodyDef def = new BodyDef();
@@ -105,8 +125,14 @@ public class GameObject {
     public void hit() {
     }
 
-    public void render(SpriteBatch batch) {
+    public boolean isSliced() {
+        return sliced;
+    }
 
+    public void render(SpriteBatch batch) {
+        if (!sliced) {
+            sprite.draw(batch);
+        }
     }
 
     public boolean isOutOfScreen() {
@@ -127,8 +153,6 @@ public class GameObject {
     public void slice() {
         if (!sliced) {
             sliced = true;
-            // Здесь можно добавить эффект разрезания
-            // и создать два половинки фрукта
         }
     }
 

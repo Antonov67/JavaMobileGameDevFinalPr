@@ -69,6 +69,10 @@ public class BladeObject {
         }
         shapeRenderer.end();
 
+        if (!slicing){
+            points.clear();
+        }
+
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
