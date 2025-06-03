@@ -87,7 +87,7 @@ public class GameObject {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
         fixtureDef.density = 0.05f;
-        fixtureDef.friction = 0.4f;
+        fixtureDef.friction = 0.1f;
         fixtureDef.restitution = 0.3f;
         fixtureDef.filter.categoryBits = cBits;
 
@@ -96,8 +96,8 @@ public class GameObject {
         circleShape.dispose();
 
         // Применение случайного импульса
-        float impulseX = (float) (Math.random() * 500 + 100);
-        float impulseY = (float) (Math.random() * 1000 + 100);
+        float impulseX = (float) (Math.random() * 1000 + 100);
+        float impulseY = (float) (Math.random() * 1000 + 300);
 
 //        if (x > GameSettings.SCREEN_WIDTH / 2 / SCALE) {
         if (x > GameSettings.SCREEN_WIDTH / 2) {

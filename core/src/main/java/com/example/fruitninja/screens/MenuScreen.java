@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.example.fruitninja.FruitNinjaGame;
 import com.example.fruitninja.GameResources;
+import com.example.fruitninja.GameSettings;
 import com.example.fruitninja.managers.BackgroundManager;
-import com.example.fruitninja.ui.BackgroundView;
 import com.example.fruitninja.ui.ButtonView;
 import com.example.fruitninja.ui.TextView;
 
@@ -26,10 +26,26 @@ public class MenuScreen extends ScreenAdapter {
         this.fruitNinjaGame = fruitNinjaGame;
 
         backgroundManager = new BackgroundManager();
-        titleView = new TextView(fruitNinjaGame.largeWhiteFont, 180, 960, "Fruit Ninja Game");
-        startButtonView = new ButtonView(140, 646, 440, 70, fruitNinjaGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "start");
-        settingsButtonView = new ButtonView(140, 551, 440, 70, fruitNinjaGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "settings");
-        exitButtonView = new ButtonView(140, 456, 440, 70, fruitNinjaGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "exit");
+        titleView = new TextView(
+            fruitNinjaGame.largeWhiteFont,
+            GameSettings.SCREEN_WIDTH / 2 - 340,
+            GameSettings.SCREEN_HEIGHT / 2 + 500,
+            "Fruit Ninja Game");
+        startButtonView = new ButtonView(
+            GameSettings.SCREEN_WIDTH / 2 - 220,
+            GameSettings.SCREEN_HEIGHT / 2 + 200, 440, 100,
+            fruitNinjaGame.commonBlackFont,
+            GameResources.BUTTON_LONG_BG_IMG_PATH, "start");
+        settingsButtonView = new ButtonView(
+            GameSettings.SCREEN_WIDTH / 2 - 220,
+            GameSettings.SCREEN_HEIGHT / 2 + 50, 440, 100,
+            fruitNinjaGame.commonBlackFont,
+            GameResources.BUTTON_LONG_BG_IMG_PATH, "settings");
+        exitButtonView = new ButtonView(
+            GameSettings.SCREEN_WIDTH / 2 - 220,
+            GameSettings.SCREEN_HEIGHT / 2 - 100, 440, 100,
+            fruitNinjaGame.commonBlackFont,
+            GameResources.BUTTON_LONG_BG_IMG_PATH, "exit");
     }
 
     @Override

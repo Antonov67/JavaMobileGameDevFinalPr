@@ -1,7 +1,8 @@
 package com.example.fruitninja;
 
 import com.badlogic.gdx.utils.TimeUtils;
-import com.mygdx.game.managers.MemoryManager;
+import com.example.fruitninja.managers.MemoryManager;
+
 
 import java.util.ArrayList;
 

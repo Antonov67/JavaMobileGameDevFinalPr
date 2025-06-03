@@ -34,9 +34,9 @@ public class FruitNinjaGame extends Game {
         Box2D.init();
         world = new World(new Vector2(0, -9.8f), true);
 
-        largeWhiteFont = FontBuilder.generate(48, Color.WHITE, GameResources.GAME_FONT);
+        largeWhiteFont = FontBuilder.generate(70, Color.WHITE, GameResources.GAME_FONT);
         commonWhiteFont = FontBuilder.generate(24, Color.WHITE, GameResources.GAME_FONT);
-        commonBlackFont = FontBuilder.generate(24, Color.BLACK, GameResources.GAME_FONT);
+        commonBlackFont = FontBuilder.generate(50, Color.BLACK, GameResources.GAME_FONT);
 
         batch = new SpriteBatch();
         camera = new OrthographicCamera();

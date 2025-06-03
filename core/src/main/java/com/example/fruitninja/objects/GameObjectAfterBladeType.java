@@ -6,37 +6,37 @@ public enum GameObjectAfterBladeType {
         GameObjectType.RED_APPLE,
         "halves/red_apple_half1.png",
         "halves/red_apple_half2.png",
-        55),
+        100),
     GREEN_APPLE_HALVES(
         GameObjectType.GREEN_APPLE,
         "halves/green_apple_half1.png",
         "halves/green_apple_half2.png",
-        55),
+        100),
     BANANA_HALVES(
         GameObjectType.BANANA,
         "halves/banana_half1.png",
             "halves/banana_half2.png",
-            55),
+            100),
     PINEAPPLE(
         GameObjectType.PINEAPPLE,
         "halves/pineapple_half1.png",
         "halves/pineapple_half2.png",
-        55),
+        100),
     ORANGE(
         GameObjectType.ORANGE,
         "halves/orange_half1.png",
         "halves/orange_half1.png",
-        55),
+        100),
     WATERMELON_HALVES(
         GameObjectType.WATERMELON,
         "halves/watermelon_half1.png",
             "halves/watermelon_half2.png",
-            55),
+            100),
     BOMB(
         GameObjectType.BOMB,
         "bombs/bomb_bang.png",
         "bombs/bomb_bang.png",
-        75);
+        100);
 
     public final GameObjectType gameObjectType;
     public final String texturePath1;
