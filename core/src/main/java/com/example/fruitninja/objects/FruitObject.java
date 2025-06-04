@@ -10,9 +10,10 @@ public class FruitObject extends GameObject {
         this.isBomb = false;
     }
 
-    public FruitObject(String texturePath, float radius, int x, int y, World world, short cBits) {
-        super(texturePath, radius, x, y, world, cBits);
+    public FruitObject(String texturePath, float radius, int x, int y, World world, short cBits, boolean sliced) {
+        super(texturePath, radius, x, y, world, cBits, sliced);
         this.isBomb = false;
+        this.sliced = sliced;
     }
 
 }

@@ -47,6 +47,7 @@ public class GameObjectManager {
                 Gdx.app.log("Game", "gameObjects count on Screen: " + gameObjects.size());
                 gameObject.dispose();
                 iter.remove();
+                gameObject.destroy(world);
             }
         }
 
@@ -55,9 +56,10 @@ public class GameObjectManager {
         while (iterHalves.hasNext()) {
             GameObject gameObject = iterHalves.next();
             gameObject.update(delta);
-            if (gameObject.isOutOfScreen()) {
+            if (gameObject.isOutOfScreen() || gameObject.getLifetime() < 0) {
                 gameObject.dispose();
                 iterHalves.remove();
+                gameObject.destroy(world);
             }
         }
     }
@@ -89,7 +91,8 @@ public class GameObjectManager {
                                 gameObject.getX(),
                                 gameObject.getY(),
                                 world,
-                                gameObject.cBits
+                                gameObject.cBits,
+                                true
                             ));
                         Gdx.app.log("Game", "Bomb hit! Game over!" + gameObject.getTexture().toString());
                     } else {
@@ -102,7 +105,8 @@ public class GameObjectManager {
                                 gameObject.getX(),
                                 gameObject.getY(),
                                 world,
-                                gameObject.cBits
+                                gameObject.cBits,
+                                true
                             ));
                         gameObjectsAfterBlade.add(
                             new FruitObject(
@@ -111,7 +115,8 @@ public class GameObjectManager {
                                 gameObject.getX(),
                                 gameObject.getY(),
                                 world,
-                                gameObject.cBits
+                                gameObject.cBits,
+                                true
                             ));
                         Gdx.app.log("Game", "Fruit hit!" + gameObject.getTexture().toString());
                         // Здесь можно добавить очки и эффекты

@@ -17,4 +17,5 @@ public class GameSettings {
     public static final short FRUIT_BIT = 1;
     public static final short BOMB_BIT = 2;
     public static final int STARTING_TRASH_APPEARANCE_COOL_DOWN = 2000;
+    public static final int LIFE_TIME = 100;
 }

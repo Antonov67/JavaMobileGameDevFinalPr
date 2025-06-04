@@ -10,8 +10,9 @@ public class BombObject extends GameObject {
         this.isBomb = true;
     }
 
-    public BombObject(String texturePath, float radius, int x, int y, World world, short cBits) {
-        super(texturePath, radius, x, y, world, cBits);
+    public BombObject(String texturePath, float radius, int x, int y, World world, short cBits, boolean sliced) {
+        super(texturePath, radius, x, y, world, cBits, sliced);
         this.isBomb = true;
+        this.sliced = sliced;
     }
 }

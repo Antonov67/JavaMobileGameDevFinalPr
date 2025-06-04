@@ -58,7 +58,7 @@ public class BladeObject {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(1, 1, 1, 0.8f));
         // Рисуем толстую линию как прямоугольник
-        float thickness = 5f; // Толщина линии
+        float thickness = 10f; // Толщина линии
         for (int i = 0; i < points.size - 1; i++) {
             Vector2 p1 = points.get(i);
             Vector2 p2 = points.get(i + 1);

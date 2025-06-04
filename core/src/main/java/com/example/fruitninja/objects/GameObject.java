@@ -27,6 +27,7 @@ public class GameObject {
     public short cBits;
     protected boolean sliced = false;
     protected GameObjectType type;
+    protected int lifetime = GameSettings.LIFE_TIME;
 
     public Texture getTexture() {
         return texture;
@@ -49,11 +50,12 @@ public class GameObject {
         body = createBody(x, y, world);
     }
 
-    public GameObject(String texturePath, float radius, int x, int y, World world, short cBits) {
+    public GameObject(String texturePath, float radius, int x, int y, World world, short cBits, boolean sliced) {
         this.radius = radius;
         this.width = (int) (radius * 2);
         this.height = (int) (radius * 2);
         this.cBits = cBits;
+        this.sliced = sliced;
 
         // Создание спрайта
         sprite = new Sprite(new Texture(texturePath));
@@ -79,6 +81,7 @@ public class GameObject {
         def.position.set(x, y);
         def.fixedRotation = false;
         Body body = world.createBody(def);
+        body.setBullet(true);
 
         CircleShape circleShape = new CircleShape();
         //circleShape.setRadius(Math.max(width, height) * SCALE / 2f);
@@ -87,8 +90,8 @@ public class GameObject {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
         fixtureDef.density = 0.05f;
-        fixtureDef.friction = 0.1f;
-        fixtureDef.restitution = 0.3f;
+        fixtureDef.friction = 1f;
+        //fixtureDef.restitution = 0.3f;
         fixtureDef.filter.categoryBits = cBits;
 
         Fixture fixture = body.createFixture(fixtureDef);
@@ -96,14 +99,14 @@ public class GameObject {
         circleShape.dispose();
 
         // Применение случайного импульса
-        float impulseX = (float) (Math.random() * 1000 + 100);
-        float impulseY = (float) (Math.random() * 1000 + 300);
+        float impulseX = (float) (Math.random() * 500 + 100);
+        float impulseY = (float) (Math.random() * 1000 + 100);
 
 //        if (x > GameSettings.SCREEN_WIDTH / 2 / SCALE) {
         if (x > GameSettings.SCREEN_WIDTH / 2) {
             impulseX = -impulseX;
         }
-        //body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
+        body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
         body.setLinearVelocity(new Vector2(impulseX, impulseY));
 
         //случайное направление и скорость вращения фрукта
@@ -111,15 +114,18 @@ public class GameObject {
 
 
         //body.setTransform(x * SCALE, y * SCALE, 0);
-       // body.setTransform(x, y, 0);
+        // body.setTransform(x, y, 0);
         return body;
     }
 
     public void update(float delta) {
         // Обновление позиции спрайта по позиции тела
         Vector2 position = body.getPosition();
-        sprite.setPosition(position.x - radius, position.y - radius);
+        sprite.setPosition(position.x, position.y);
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+        if (sliced){
+            lifetime--; // уменьшаем время жизни
+        }
     }
 
     public void hit() {
@@ -130,9 +136,7 @@ public class GameObject {
     }
 
     public void render(SpriteBatch batch) {
-        if (!sliced) {
-            sprite.draw(batch);
-        }
+        sprite.draw(batch);
     }
 
     public boolean isOutOfScreen() {
@@ -141,12 +145,12 @@ public class GameObject {
     }
 
     public int getX() {
-       // return (int) (body.getPosition().x / SCALE);
+        // return (int) (body.getPosition().x / SCALE);
         return (int) (body.getPosition().x);
     }
 
     public int getY() {
-       // return (int) (body.getPosition().y / SCALE);
+        // return (int) (body.getPosition().y / SCALE);
         return (int) (body.getPosition().y);
     }
 
@@ -154,6 +158,10 @@ public class GameObject {
         if (!sliced) {
             sliced = true;
         }
+    }
+
+    public int getLifetime() {
+        return lifetime;
     }
 
     public Vector2 getPosition() {
@@ -168,7 +176,7 @@ public class GameObject {
         texture.dispose();
     }
 
-    public void destroy(World world){
+    public void destroy(World world) {
         world.destroyBody(body);
     }
 }
