@@ -22,6 +22,9 @@ public class GameObjectManager {
     private final ArrayList<GameObject> gameObjectsAfterBlade;
     private long lastFruitTime;
     private float spawnInterval = 1f;
+    private int bangCount;
+    private int fruitSliceCount;
+
 
     public GameObjectManager(World world, SpriteBatch batch) {
         this.world = world;
@@ -29,6 +32,8 @@ public class GameObjectManager {
         this.gameObjects = new ArrayList<>();
         this.gameObjectsAfterBlade = new ArrayList<>();
         this.lastFruitTime = TimeUtils.nanoTime();
+        this.bangCount = 0;
+        this.fruitSliceCount = 0;
     }
 
     public void update(float delta) {
@@ -50,6 +55,7 @@ public class GameObjectManager {
                 gameObject.destroy(world);
             }
         }
+
 
         // Удаление половинок фруктов за пределами экрана
         Iterator<GameObject> iterHalves = gameObjectsAfterBlade.iterator();
@@ -84,6 +90,7 @@ public class GameObjectManager {
                     gameObject.slice();
                     if (gameObject.isBomb()) {
                         // Взрыв бомбы
+                        bangCount++;
                         gameObjectsAfterBlade.add(
                             new BombObject(
                                 GameObjectAfterBladeType.getGameObjectHalves(gameObject.getType()).texturePath1,
@@ -97,7 +104,7 @@ public class GameObjectManager {
                         Gdx.app.log("Game", "Bomb hit! Game over!" + gameObject.getTexture().toString());
                     } else {
                         // Разрезание фрукта
-
+                        fruitSliceCount++;
                         gameObjectsAfterBlade.add(
                             new FruitObject(
                                 GameObjectAfterBladeType.getGameObjectHalves(gameObject.getType()).texturePath1,
@@ -126,6 +133,14 @@ public class GameObjectManager {
                 }
             }
         }
+    }
+
+    public int getBangCount() {
+        return bangCount;
+    }
+
+    public int getFruitSliceCount() {
+        return fruitSliceCount;
     }
 
     private void spawnRandomGameObject() {

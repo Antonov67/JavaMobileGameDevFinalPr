@@ -32,6 +32,7 @@ public class FruitNinjaGame extends Game {
     public SettingsScreen settingsScreen;
     public Vector3 touch;
     public AudioManager audioManager;
+    public int lives = GameSettings.LIVES;
 
     @Override
     public void create() {

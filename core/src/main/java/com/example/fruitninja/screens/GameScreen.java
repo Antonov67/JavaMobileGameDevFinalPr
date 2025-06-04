@@ -8,6 +8,7 @@ import com.example.fruitninja.FruitNinjaGame;
 import com.example.fruitninja.GameResources;
 import com.example.fruitninja.GameSession;
 import com.example.fruitninja.GameSettings;
+import com.example.fruitninja.GameState;
 import com.example.fruitninja.InputHandler;
 import com.example.fruitninja.managers.BackgroundManager;
 import com.example.fruitninja.managers.GameObjectManager;
@@ -15,6 +16,7 @@ import com.example.fruitninja.objects.BladeObject;
 import com.example.fruitninja.ui.ButtonView;
 import com.example.fruitninja.ui.ImageView;
 import com.example.fruitninja.ui.LiveView;
+import com.example.fruitninja.ui.RecordsListView;
 import com.example.fruitninja.ui.TextView;
 
 public class GameScreen extends ScreenAdapter {
@@ -27,6 +29,15 @@ public class GameScreen extends ScreenAdapter {
     LiveView liveView;
     TextView scoreTextView;
     ButtonView pauseButton;
+    ImageView fullBlackoutView;
+    TextView pauseTextView;
+    ButtonView homeButton;
+    ButtonView continueButton;
+
+    // ENDED state UI
+    TextView recordsTextView;
+    RecordsListView recordsListView;
+    ButtonView homeButton2;
 
     GameSession gameSession;
 
@@ -52,7 +63,12 @@ public class GameScreen extends ScreenAdapter {
             GameSettings.SCREEN_WIDTH  - 500,
             GameSettings.SCREEN_HEIGHT - 130
         );
-        scoreTextView = new TextView(fruitNinjaGame.commonWhiteFont, 50, 1215);
+        scoreTextView = new TextView(
+            fruitNinjaGame.commonWhiteFont,
+            30,
+            GameSettings.SCREEN_HEIGHT - 100,
+            "0"
+        );
         pauseButton = new ButtonView(
             GameSettings.SCREEN_WIDTH  - 150,
             GameSettings.SCREEN_HEIGHT - 120,
@@ -60,8 +76,35 @@ public class GameScreen extends ScreenAdapter {
             GameResources.PAUSE_IMG_PATH
         );
 
+        fullBlackoutView = new ImageView(0, 0, GameResources.BLACKOUT_FULL_IMG_PATH);
+        pauseTextView = new TextView(fruitNinjaGame.largeWhiteFont, 282, 842, "Pause");
+        homeButton = new ButtonView(
+            138, 695,
+            200, 70,
+            fruitNinjaGame.commonBlackFont,
+            GameResources.BUTTON_SHORT_BG_IMG_PATH,
+            "Home"
+        );
+        continueButton = new ButtonView(
+            393, 695,
+            200, 70,
+            fruitNinjaGame.commonBlackFont,
+            GameResources.BUTTON_SHORT_BG_IMG_PATH,
+            "Continue"
+        );
+
+        recordsListView = new RecordsListView(fruitNinjaGame.commonWhiteFont, 690);
+        recordsTextView = new TextView(fruitNinjaGame.largeWhiteFont, 206, 842, "Last records");
+        homeButton2 = new ButtonView(
+            280, 365,
+            160, 70,
+            fruitNinjaGame.commonBlackFont,
+            GameResources.BUTTON_SHORT_BG_IMG_PATH,
+            "Home"
+        );
+
         // Настройка обработки ввода
-        //Gdx.input.setInputProcessor(new InputHandler(blade));
+        Gdx.input.setInputProcessor(new InputHandler(blade));
     }
 
     @Override
@@ -86,9 +129,24 @@ public class GameScreen extends ScreenAdapter {
         gameObjectManager.render();
 
         topBlackoutView.draw(fruitNinjaGame.batch);
-        //scoreTextView.draw(fruitNinjaGame.batch);
+        scoreTextView.draw(fruitNinjaGame.batch);
         liveView.draw(fruitNinjaGame.batch);
         pauseButton.draw(fruitNinjaGame.batch);
+
+        scoreTextView.setText("Score: " + gameObjectManager.getFruitSliceCount());
+        liveView.setLeftLives(fruitNinjaGame.lives - gameObjectManager.getBangCount());
+
+        if (gameSession.state == GameState.PAUSED) {
+            fullBlackoutView.draw(fruitNinjaGame.batch);
+            pauseTextView.draw(fruitNinjaGame.batch);
+            homeButton.draw(fruitNinjaGame.batch);
+            continueButton.draw(fruitNinjaGame.batch);
+        } else if (gameSession.state == GameState.ENDED) {
+            fullBlackoutView.draw(fruitNinjaGame.batch);
+            recordsTextView.draw(fruitNinjaGame.batch);
+            recordsListView.draw(fruitNinjaGame.batch);
+            homeButton2.draw(fruitNinjaGame.batch);
+        }
 
         fruitNinjaGame.batch.end();
         //отрисовка лезвия после завершения отрисовки фона и фруктов
@@ -132,6 +190,7 @@ public class GameScreen extends ScreenAdapter {
 
         gameObjectManager.dispose();
         gameObjectManager = new GameObjectManager(fruitNinjaGame.world, fruitNinjaGame.batch);
+        fruitNinjaGame.lives = GameSettings.LIVES;
         gameSession.startGame();
     }
 
@@ -147,21 +206,21 @@ public class GameScreen extends ScreenAdapter {
 
                     break;
 
-//                case PAUSED:
-//                    if (continueButton.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
-//                        gameSession.resumeGame();
-//                    }
-//                    if (homeButton.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
-//                        fruitNinjaGame.setScreen(fruitNinjaGame.menuScreen);
-//                    }
-//                    break;
-//
-//                case ENDED:
-//
-//                    if (homeButton2.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
-//                        fruitNinjaGame.setScreen(fruitNinjaGame.menuScreen);
-//                    }
-//                    break;
+                case PAUSED:
+                    if (continueButton.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+                        gameSession.resumeGame();
+                    }
+                    if (homeButton.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+                        fruitNinjaGame.setScreen(fruitNinjaGame.menuScreen);
+                    }
+                    break;
+
+                case ENDED:
+
+                    if (homeButton2.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+                        fruitNinjaGame.setScreen(fruitNinjaGame.menuScreen);
+                    }
+                    break;
             }
 
         }
