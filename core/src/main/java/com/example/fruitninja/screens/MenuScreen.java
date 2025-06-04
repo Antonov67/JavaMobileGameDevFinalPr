@@ -80,7 +80,7 @@ public class MenuScreen extends ScreenAdapter {
             }
             if (settingsButtonView.isHit(fruitNinjaGame.touch.x,
                 fruitNinjaGame.touch.y)) {
-                //fruitNinjaGame.setScreen(fruitNinjaGame.settingsScreen);
+                fruitNinjaGame.setScreen(fruitNinjaGame.settingsScreen);
             }
         }
     }

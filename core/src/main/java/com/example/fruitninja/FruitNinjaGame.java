@@ -14,8 +14,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
+import com.example.fruitninja.managers.AudioManager;
 import com.example.fruitninja.screens.GameScreen;
 import com.example.fruitninja.screens.MenuScreen;
+import com.example.fruitninja.screens.SettingsScreen;
 
 public class FruitNinjaGame extends Game {
     public SpriteBatch batch;
@@ -27,7 +29,9 @@ public class FruitNinjaGame extends Game {
     float accumulator = 0;
     public GameScreen gameScreen;
     public MenuScreen menuScreen;
+    public SettingsScreen settingsScreen;
     public Vector3 touch;
+    public AudioManager audioManager;
 
     @Override
     public void create() {
@@ -35,7 +39,7 @@ public class FruitNinjaGame extends Game {
         world = new World(new Vector2(0, -9.8f), true);
 
         largeWhiteFont = FontBuilder.generate(70, Color.WHITE, GameResources.GAME_FONT);
-        commonWhiteFont = FontBuilder.generate(24, Color.WHITE, GameResources.GAME_FONT);
+        commonWhiteFont = FontBuilder.generate(45, Color.WHITE, GameResources.GAME_FONT);
         commonBlackFont = FontBuilder.generate(50, Color.BLACK, GameResources.GAME_FONT);
 
         batch = new SpriteBatch();
@@ -44,6 +48,9 @@ public class FruitNinjaGame extends Game {
 
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
+        settingsScreen = new SettingsScreen(this);
+
+        audioManager = new AudioManager();
 
         setScreen(menuScreen);
     }

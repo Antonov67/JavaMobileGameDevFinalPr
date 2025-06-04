@@ -147,11 +147,13 @@ public class GameObjectManager {
     public void dispose() {
         for (GameObject gameObject : gameObjects) {
             gameObject.dispose();
+            gameObject.destroy(world);
         }
         gameObjects.clear();
 
         for (GameObject gameObject : gameObjectsAfterBlade) {
             gameObject.dispose();
+            gameObject.destroy(world);
         }
         gameObjectsAfterBlade.clear();
     }

@@ -13,6 +13,7 @@ public class BladeObject {
     private Array<Vector2> points;
     private ShapeRenderer shapeRenderer;
     private boolean slicing = false;
+    private boolean isSound = false;
 
 
     public BladeObject(SpriteBatch batch) {
@@ -26,9 +27,11 @@ public class BladeObject {
         points.clear();
         points.add(new Vector2(x, y));
         slicing = true;
+        isSound = true;
     }
 
     public void addPoint(float x, float y) {
+        isSound = false;
         if (slicing) {
             points.add(new Vector2(x, y));
         }
@@ -74,6 +77,10 @@ public class BladeObject {
         }
 
         Gdx.gl.glDisable(GL20.GL_BLEND);
+    }
+
+    public boolean needToSound(){
+        return isSound;
     }
 
     public boolean intersects(Vector2 center, float radius) {

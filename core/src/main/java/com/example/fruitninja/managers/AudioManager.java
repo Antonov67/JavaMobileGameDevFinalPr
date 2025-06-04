@@ -12,16 +12,21 @@ public class AudioManager {
     public boolean isMusicOn;
 
     public Music backgroundMusic;
-    public Sound shootSound;
-    public Sound explosionSound;
+    public Sound bladeSound;
+    public Sound bangSound;
 
     public AudioManager() {
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameResources.BACKGROUND_MUSIC_PATH));
-        shootSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.BLADE_SOUND_PATH));
-        explosionSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.BANG_SOUND_PATH));
+        BackgroundMusicType[] types = BackgroundMusicType.values();
+        BackgroundMusicType type = types[(int) (Math.random() * types.length)];
 
-        backgroundMusic.setVolume(0.2f);
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(type.musicPath));
+        bladeSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.BLADE_SOUND_PATH));
+        bangSound = Gdx.audio.newSound(Gdx.files.internal(GameResources.BANG_SOUND_PATH));
+
+        backgroundMusic.setVolume(0.7f);
         backgroundMusic.setLooping(true);
+
+
 
         updateSoundFlag();
         updateMusicFlag();
