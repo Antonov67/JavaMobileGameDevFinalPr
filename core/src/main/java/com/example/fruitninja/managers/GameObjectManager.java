@@ -24,6 +24,7 @@ public class GameObjectManager {
     private float spawnInterval = 1f;
     private int bangCount;
     private int fruitSliceCount;
+    private boolean bangSound;
 
 
     public GameObjectManager(World world, SpriteBatch batch) {
@@ -34,6 +35,7 @@ public class GameObjectManager {
         this.lastFruitTime = TimeUtils.nanoTime();
         this.bangCount = 0;
         this.fruitSliceCount = 0;
+        this.bangSound = false;
     }
 
     public void update(float delta) {
@@ -90,6 +92,7 @@ public class GameObjectManager {
                     gameObject.slice();
                     if (gameObject.isBomb()) {
                         // Взрыв бомбы
+                        bangSound = true;
                         bangCount++;
                         gameObjectsAfterBlade.add(
                             new BombObject(
@@ -141,6 +144,14 @@ public class GameObjectManager {
 
     public int getFruitSliceCount() {
         return fruitSliceCount;
+    }
+
+    public boolean needToBangSound() {
+        return bangSound;
+    }
+
+    public void setNeedToBangSound(boolean bangSound) {
+        this.bangSound = bangSound;
     }
 
     private void spawnRandomGameObject() {
