@@ -21,24 +21,28 @@ public class GameSession {
     public void startGame() {
         state = GameState.PLAYING;
         score = 0;
-        destructedTrashNumber = 0;
-        sessionStartTime = TimeUtils.millis();
-        nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN
-            * getTrashPeriodCoolDown());
+        //destructedTrashNumber = 0;
+//        sessionStartTime = TimeUtils.millis();
+//        nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_TRASH_APPEARANCE_COOL_DOWN
+//            * getTrashPeriodCoolDown());
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void pauseGame() {
         state = GameState.PAUSED;
-        pauseStartTime = TimeUtils.millis();
+        //pauseStartTime = TimeUtils.millis();
     }
 
     public void resumeGame() {
         state = GameState.PLAYING;
-        sessionStartTime += TimeUtils.millis() - pauseStartTime;
+        //sessionStartTime += TimeUtils.millis() - pauseStartTime;
     }
 
     public void endGame() {
-        updateScore();
+        //updateScore();
         state = GameState.ENDED;
         ArrayList<Integer> recordsTable = MemoryManager.loadRecordsTable();
         if (recordsTable == null) {

@@ -44,7 +44,6 @@ public class GameScreen extends ScreenAdapter {
     private int lives;
 
 
-
     public GameScreen(FruitNinjaGame fruitNinjaGame) {
 
         this.fruitNinjaGame = fruitNinjaGame;
@@ -64,7 +63,7 @@ public class GameScreen extends ScreenAdapter {
             130,
             GameResources.BLACKOUT_TOP_IMG_PATH);
         liveView = new LiveView(
-            GameSettings.SCREEN_WIDTH  - 500,
+            GameSettings.SCREEN_WIDTH - 500,
             GameSettings.SCREEN_HEIGHT - 130
         );
         scoreTextView = new TextView(
@@ -74,34 +73,52 @@ public class GameScreen extends ScreenAdapter {
             "0"
         );
         pauseButton = new ButtonView(
-            GameSettings.SCREEN_WIDTH  - 150,
+            GameSettings.SCREEN_WIDTH - 150,
             GameSettings.SCREEN_HEIGHT - 120,
             46, 54,
             GameResources.PAUSE_IMG_PATH
         );
 
-        fullBlackoutView = new ImageView(0, 0, GameResources.BLACKOUT_FULL_IMG_PATH);
-        pauseTextView = new TextView(fruitNinjaGame.largeWhiteFont, 282, 842, "Pause");
+        fullBlackoutView = new ImageView(
+            GameSettings.SCREEN_WIDTH / 2 - 350,
+            GameSettings.SCREEN_HEIGHT / 2 - 500,
+            GameResources.BLACKOUT_FULL_IMG_PATH);
+        pauseTextView = new TextView(
+            fruitNinjaGame.largeWhiteFont,
+            GameSettings.SCREEN_WIDTH / 2 - 100,
+            GameSettings.SCREEN_HEIGHT / 2 + 500,
+            "Pause");
         homeButton = new ButtonView(
-            138, 695,
-            200, 70,
+            GameSettings.SCREEN_WIDTH / 2 - 330,
+            GameSettings.SCREEN_HEIGHT / 2 + 200,
+            300, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_SHORT_BG_IMG_PATH,
             "Home"
         );
         continueButton = new ButtonView(
-            393, 695,
-            200, 70,
+            GameSettings.SCREEN_WIDTH / 2 + 50,
+            GameSettings.SCREEN_HEIGHT / 2 + 200,
+            300, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_SHORT_BG_IMG_PATH,
             "Continue"
         );
 
-        recordsListView = new RecordsListView(fruitNinjaGame.commonWhiteFont, 690);
-        recordsTextView = new TextView(fruitNinjaGame.largeWhiteFont, 206, 842, "Last records");
+        recordsListView = new RecordsListView(
+            fruitNinjaGame.commonWhiteFont,
+            GameSettings.SCREEN_HEIGHT / 2 + 400
+        );
+        recordsTextView = new TextView(
+            fruitNinjaGame.largeWhiteFont,
+            GameSettings.SCREEN_WIDTH / 2 - 200,
+            GameSettings.SCREEN_HEIGHT / 2 + 500,
+            "Last records"
+        );
         homeButton2 = new ButtonView(
-            280, 365,
-            160, 70,
+            GameSettings.SCREEN_WIDTH / 2 - 100,
+            GameSettings.SCREEN_HEIGHT / 2,
+            200, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_SHORT_BG_IMG_PATH,
             "Home"
@@ -131,9 +148,6 @@ public class GameScreen extends ScreenAdapter {
 
             // Рендеринг
 
-
-
-
             gameObjectManager.render();
 
             topBlackoutView.draw(fruitNinjaGame.batch);
@@ -145,6 +159,7 @@ public class GameScreen extends ScreenAdapter {
             liveView.setLeftLives(lives - gameObjectManager.getBangCount());
 
             if ((lives - gameObjectManager.getBangCount()) == 0) {
+                gameSession.setScore(gameObjectManager.getFruitSliceCount());
                 gameSession.endGame();
                 recordsListView.setRecords(MemoryManager.loadRecordsTable());
             }
@@ -183,12 +198,12 @@ public class GameScreen extends ScreenAdapter {
         gameObjectManager.checkSlice(blade);
 
         //звук лезвия
-        if (fruitNinjaGame.audioManager.isSoundOn && blade.needToSound()){
+        if (fruitNinjaGame.audioManager.isSoundOn && blade.needToSound()) {
             fruitNinjaGame.audioManager.bladeSound.play(0.4f);
         }
 
         //звук бомбы
-        if (fruitNinjaGame.audioManager.isSoundOn && gameObjectManager.needToBangSound()){
+        if (fruitNinjaGame.audioManager.isSoundOn && gameObjectManager.needToBangSound()) {
             fruitNinjaGame.audioManager.bangSound.play(0.5f);
             gameObjectManager.setNeedToBangSound(false);
         }
