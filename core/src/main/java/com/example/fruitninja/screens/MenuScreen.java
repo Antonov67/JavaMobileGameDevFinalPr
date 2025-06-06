@@ -14,13 +14,13 @@ import com.example.fruitninja.ui.TextView;
 
 public class MenuScreen extends ScreenAdapter {
 
-    FruitNinjaGame fruitNinjaGame;
+    private final FruitNinjaGame fruitNinjaGame;
 
-    BackgroundManager backgroundManager;
-    TextView titleView;
-    ButtonView startButtonView;
-    ButtonView settingsButtonView;
-    ButtonView exitButtonView;
+    private final BackgroundManager backgroundManager;
+    private final TextView titleView;
+    private final ButtonView startButtonView;
+    private final ButtonView settingsButtonView;
+    private final ButtonView exitButtonView;
 
     public MenuScreen(FruitNinjaGame fruitNinjaGame) {
         this.fruitNinjaGame = fruitNinjaGame;
@@ -28,22 +28,22 @@ public class MenuScreen extends ScreenAdapter {
         backgroundManager = new BackgroundManager();
         titleView = new TextView(
             fruitNinjaGame.largeWhiteFont,
-            GameSettings.SCREEN_WIDTH / 2 - 340,
-            GameSettings.SCREEN_HEIGHT / 2 + 500,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 340,
+            (float) GameSettings.SCREEN_HEIGHT / 2 + 500,
             "Fruit Ninja Game");
         startButtonView = new ButtonView(
-            GameSettings.SCREEN_WIDTH / 2 - 220,
-            GameSettings.SCREEN_HEIGHT / 2 + 200, 440, 100,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 220,
+            (float) GameSettings.SCREEN_HEIGHT / 2 + 200, 440, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_LONG_BG_IMG_PATH, "start");
         settingsButtonView = new ButtonView(
-            GameSettings.SCREEN_WIDTH / 2 - 220,
-            GameSettings.SCREEN_HEIGHT / 2 + 50, 440, 100,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 220,
+            (float) GameSettings.SCREEN_HEIGHT / 2 + 50, 440, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_LONG_BG_IMG_PATH, "settings");
         exitButtonView = new ButtonView(
-            GameSettings.SCREEN_WIDTH / 2 - 220,
-            GameSettings.SCREEN_HEIGHT / 2 - 100, 440, 100,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 220,
+            (float) GameSettings.SCREEN_HEIGHT / 2 - 100, 440, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_LONG_BG_IMG_PATH, "exit");
     }
@@ -53,34 +53,34 @@ public class MenuScreen extends ScreenAdapter {
 
         handleInput();
 
-        fruitNinjaGame.camera.update();
-        fruitNinjaGame.batch.setProjectionMatrix(fruitNinjaGame.camera.combined);
+        fruitNinjaGame.getCamera().update();
+        fruitNinjaGame.getBatch().setProjectionMatrix(fruitNinjaGame.getCamera().combined);
         ScreenUtils.clear(Color.CLEAR);
 
-        fruitNinjaGame.batch.begin();
+        fruitNinjaGame.getBatch().begin();
 
-        backgroundManager.render(fruitNinjaGame.batch);
-        titleView.draw(fruitNinjaGame.batch);
-        exitButtonView.draw(fruitNinjaGame.batch);
-        settingsButtonView.draw(fruitNinjaGame.batch);
-        startButtonView.draw(fruitNinjaGame.batch);
+        backgroundManager.render(fruitNinjaGame.getBatch());
+        titleView.draw(fruitNinjaGame.getBatch());
+        exitButtonView.draw(fruitNinjaGame.getBatch());
+        settingsButtonView.draw(fruitNinjaGame.getBatch());
+        startButtonView.draw(fruitNinjaGame.getBatch());
 
-        fruitNinjaGame.batch.end();
+        fruitNinjaGame.getBatch().end();
     }
 
     private void handleInput() {
         if (Gdx.input.justTouched()) {
-            fruitNinjaGame.touch = fruitNinjaGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            fruitNinjaGame.setTouch(fruitNinjaGame.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
 
-            if (startButtonView.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
-                fruitNinjaGame.setScreen(fruitNinjaGame.gameScreen);
+            if (startButtonView.isHit(fruitNinjaGame.getTouch().x, fruitNinjaGame.getTouch().y)) {
+                fruitNinjaGame.setScreen(fruitNinjaGame.getGameScreen());
             }
-            if (exitButtonView.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+            if (exitButtonView.isHit(fruitNinjaGame.getTouch().x, fruitNinjaGame.getTouch().y)) {
                 Gdx.app.exit();
             }
-            if (settingsButtonView.isHit(fruitNinjaGame.touch.x,
-                fruitNinjaGame.touch.y)) {
-                fruitNinjaGame.setScreen(fruitNinjaGame.settingsScreen);
+            if (settingsButtonView.isHit(fruitNinjaGame.getTouch().x,
+                fruitNinjaGame.getTouch().y)) {
+                fruitNinjaGame.setScreen(fruitNinjaGame.getSettingsScreen());
             }
         }
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.example.fruitninja.GameResources;
+import com.example.fruitninja.enums.BackgroundMusicType;
 
 
 public class AudioManager {
@@ -25,8 +26,6 @@ public class AudioManager {
 
         backgroundMusic.setVolume(0.7f);
         backgroundMusic.setLooping(true);
-
-
 
         updateSoundFlag();
         updateMusicFlag();

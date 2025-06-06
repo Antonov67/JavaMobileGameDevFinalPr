@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 
 public class View implements Disposable {
-    float x, y;
-    float width, height;
+    protected float x, y;
+    protected float width, height;
 
     public View(float x, float y) {
         this.x = x;
@@ -23,14 +23,10 @@ public class View implements Disposable {
         return (tx >= x && tx <= x + width && ty >= y && ty <= y + height);
     }
 
-    public void draw(SpriteBatch batch){
-
+    public void draw(SpriteBatch batch) {
     }
 
     @Override
     public void dispose() {
-
-
-
     }
 }

@@ -8,9 +8,8 @@ import com.example.fruitninja.GameResources;
 public class LiveView extends View {
 
     private static int livePadding = 6;
-    private String text;
     private int leftLives;
-    private Texture texture;
+    private final Texture texture;
 
     public LiveView(float x, float y) {
         super(x, y);

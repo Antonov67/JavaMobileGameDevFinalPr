@@ -1,4 +1,4 @@
-package com.example.fruitninja.objects;
+package com.example.fruitninja.enums;
 
 import java.util.Arrays;
 

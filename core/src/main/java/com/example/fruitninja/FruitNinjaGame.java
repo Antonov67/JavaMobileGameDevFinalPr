@@ -20,18 +20,18 @@ import com.example.fruitninja.screens.MenuScreen;
 import com.example.fruitninja.screens.SettingsScreen;
 
 public class FruitNinjaGame extends Game {
-    public SpriteBatch batch;
-    public World world;
+    private SpriteBatch batch;
+    private World world;
     public BitmapFont largeWhiteFont;
     public BitmapFont commonWhiteFont;
     public BitmapFont commonBlackFont;
-    public OrthographicCamera camera;
-    float accumulator = 0;
-    public GameScreen gameScreen;
-    public MenuScreen menuScreen;
-    public SettingsScreen settingsScreen;
-    public Vector3 touch;
-    public AudioManager audioManager;
+    private OrthographicCamera camera;
+    private float accumulator = 0;
+    private GameScreen gameScreen;
+    private MenuScreen menuScreen;
+    private SettingsScreen settingsScreen;
+    private Vector3 touch;
+    private AudioManager audioManager;
 
     @Override
     public void create() {
@@ -53,6 +53,8 @@ public class FruitNinjaGame extends Game {
         audioManager = new AudioManager();
 
         setScreen(menuScreen);
+
+        touch = new Vector3();
     }
 
     @Override
@@ -60,9 +62,45 @@ public class FruitNinjaGame extends Game {
         super.render();
     }
 
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
+
+    public MenuScreen getMenuScreen() {
+        return menuScreen;
+    }
+
+    public SettingsScreen getSettingsScreen() {
+        return settingsScreen;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    public Vector3 getTouch() {
+        return touch;
+    }
+
+    public void setTouch(Vector3 touch) {
+        this.touch = touch;
+    }
+
+    public AudioManager getAudioManager() {
+        return audioManager;
     }
 
     public void stepWorld() {

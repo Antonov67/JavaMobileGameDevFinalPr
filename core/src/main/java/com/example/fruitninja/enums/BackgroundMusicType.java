@@ -1,4 +1,4 @@
-package com.example.fruitninja.managers;
+package com.example.fruitninja.enums;
 
 public enum BackgroundMusicType {
 
@@ -6,6 +6,7 @@ public enum BackgroundMusicType {
     MUSIC_TYPE_2("sounds/background_music2.mp3");
 
     public final String musicPath;
+
     BackgroundMusicType(String musicPath) {
         this.musicPath = musicPath;
     }

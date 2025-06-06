@@ -9,8 +9,8 @@ import com.example.fruitninja.objects.BladeObject;
 import com.example.fruitninja.objects.BombObject;
 import com.example.fruitninja.objects.FruitObject;
 import com.example.fruitninja.objects.GameObject;
-import com.example.fruitninja.objects.GameObjectAfterBladeType;
-import com.example.fruitninja.objects.GameObjectType;
+import com.example.fruitninja.enums.GameObjectAfterBladeType;
+import com.example.fruitninja.enums.GameObjectType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,11 +45,11 @@ public class GameObjectManager {
             lastFruitTime = TimeUtils.nanoTime();
         }
 
-        // Удаление фруктов за пределами экрана
+        // Удаление фруктов и бомб за пределами экрана
         Iterator<GameObject> iter = gameObjects.iterator();
         while (iter.hasNext()) {
             GameObject gameObject = iter.next();
-            gameObject.update(delta);
+            gameObject.update();
             if (gameObject.isOutOfScreen()) {
                 Gdx.app.log("Game", "gameObjects count on Screen: " + gameObjects.size());
                 gameObject.dispose();
@@ -59,11 +59,11 @@ public class GameObjectManager {
         }
 
 
-        // Удаление половинок фруктов за пределами экрана
+        // Удаление половинок фруктов и взорванных бомб за пределами экрана
         Iterator<GameObject> iterHalves = gameObjectsAfterBlade.iterator();
         while (iterHalves.hasNext()) {
             GameObject gameObject = iterHalves.next();
-            gameObject.update(delta);
+            gameObject.update();
             if (gameObject.isOutOfScreen() || gameObject.getLifetime() < 0) {
                 gameObject.dispose();
                 iterHalves.remove();
@@ -101,7 +101,6 @@ public class GameObjectManager {
                                 gameObject.getX(),
                                 gameObject.getY(),
                                 world,
-                                gameObject.cBits,
                                 true
                             ));
                         Gdx.app.log("Game", "Bomb hit! Game over!" + gameObject.getTexture().toString());
@@ -115,7 +114,6 @@ public class GameObjectManager {
                                 gameObject.getX(),
                                 gameObject.getY(),
                                 world,
-                                gameObject.cBits,
                                 true
                             ));
                         gameObjectsAfterBlade.add(
@@ -125,7 +123,6 @@ public class GameObjectManager {
                                 gameObject.getX(),
                                 gameObject.getY(),
                                 world,
-                                gameObject.cBits,
                                 true
                             ));
                         Gdx.app.log("Game", "Fruit hit!" + gameObject.getTexture().toString());
@@ -155,18 +152,17 @@ public class GameObjectManager {
     }
 
     private void spawnRandomGameObject() {
-        //int x = (int) (Math.random() * GameSettings.SCREEN_WIDTH / GameSettings.SCALE);
         int x = (int) (Math.random() * GameSettings.SCREEN_WIDTH);
         int y = 50;
 
         // 5%  - это спаун бомб
         if (Math.random() < 0.2) {
-            gameObjects.add(new BombObject(GameObjectType.BOMB, x, y, world, GameSettings.BOMB_BIT));
+            gameObjects.add(new BombObject(GameObjectType.BOMB, x, y, world));
         } else {
             // выберем случайный фрукт
             GameObjectType[] types = GameObjectType.allExcept(GameObjectType.BOMB);
             GameObjectType type = types[(int) (Math.random() * types.length)];
-            gameObjects.add(new FruitObject(type, x, y, world, GameSettings.FRUIT_BIT));
+            gameObjects.add(new FruitObject(type, x, y, world));
         }
     }
 

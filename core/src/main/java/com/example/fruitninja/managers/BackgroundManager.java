@@ -1,12 +1,12 @@
 package com.example.fruitninja.managers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.example.fruitninja.ui.BackgroundType;
+import com.example.fruitninja.enums.BackgroundType;
 import com.example.fruitninja.ui.BackgroundView;
 
 public class BackgroundManager {
 
-    private BackgroundView backgroundView;
+    private final BackgroundView backgroundView;
 
     public BackgroundManager() {
         BackgroundType[] backgroundTypes = BackgroundType.values();

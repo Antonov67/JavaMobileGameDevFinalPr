@@ -18,50 +18,50 @@ import java.util.ArrayList;
 
 public class SettingsScreen extends ScreenAdapter {
 
-    FruitNinjaGame fruitNinjaGame;
+    private final FruitNinjaGame fruitNinjaGame;
 
-    private BackgroundManager backgroundManager;
-    TextView titleTextView;
-    ImageView blackoutImageView;
-    ButtonView returnButton;
-    TextView musicSettingView;
-    TextView soundSettingView;
-    TextView clearSettingView;
+    private final BackgroundManager backgroundManager;
+    private final TextView titleTextView;
+    private final ImageView blackoutImageView;
+    private final ButtonView returnButton;
+    private final TextView musicSettingView;
+    private final TextView soundSettingView;
+    private final TextView clearSettingView;
 
     public SettingsScreen(FruitNinjaGame fruitNinjaGame) {
         this.fruitNinjaGame = fruitNinjaGame;
 
         backgroundManager = new BackgroundManager();
         titleTextView = new TextView(fruitNinjaGame.largeWhiteFont,
-            GameSettings.SCREEN_WIDTH / 2 - 110,
-            GameSettings.SCREEN_HEIGHT / 2 + 500,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 110,
+            (float) GameSettings.SCREEN_HEIGHT / 2 + 500,
             "Settings");
         blackoutImageView = new ImageView(
-            GameSettings.SCREEN_WIDTH / 2 - 250,
-            GameSettings.SCREEN_HEIGHT / 2 - 200,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 250,
+            (float) GameSettings.SCREEN_HEIGHT / 2 - 200,
             GameResources.BLACKOUT_MIDDLE_IMG_PATH);
         clearSettingView = new TextView(fruitNinjaGame.commonWhiteFont,
-            GameSettings.SCREEN_WIDTH / 2 - 130,
-            GameSettings.SCREEN_HEIGHT / 2,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 130,
+            (float) GameSettings.SCREEN_HEIGHT / 2,
             "clear records");
 
         musicSettingView = new TextView(
             fruitNinjaGame.commonWhiteFont,
-            GameSettings.SCREEN_WIDTH / 2 - 100,
-            GameSettings.SCREEN_HEIGHT / 2 + 200,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 100,
+            (float) GameSettings.SCREEN_HEIGHT / 2 + 200,
             "music: " + translateStateToText(MemoryManager.loadIsMusicOn())
         );
 
         soundSettingView = new TextView(
             fruitNinjaGame.commonWhiteFont,
-            GameSettings.SCREEN_WIDTH / 2 - 100,
-            GameSettings.SCREEN_HEIGHT / 2 + 100,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 100,
+            (float) GameSettings.SCREEN_HEIGHT / 2 + 100,
             "sound: " + translateStateToText(MemoryManager.loadIsSoundOn())
         );
 
         returnButton = new ButtonView(
-            GameSettings.SCREEN_WIDTH / 2 - 100,
-            GameSettings.SCREEN_HEIGHT / 2 - 150,
+            (float) GameSettings.SCREEN_WIDTH / 2 - 100,
+            (float) GameSettings.SCREEN_HEIGHT / 2 - 150,
             260, 100,
             fruitNinjaGame.commonBlackFont,
             GameResources.BUTTON_SHORT_BG_IMG_PATH,
@@ -75,42 +75,42 @@ public class SettingsScreen extends ScreenAdapter {
 
         handleInput();
 
-        fruitNinjaGame.camera.update();
-        fruitNinjaGame.batch.setProjectionMatrix(fruitNinjaGame.camera.combined);
+        fruitNinjaGame.getCamera().update();
+        fruitNinjaGame.getBatch().setProjectionMatrix(fruitNinjaGame.getCamera().combined);
         ScreenUtils.clear(Color.CLEAR);
 
-        fruitNinjaGame.batch.begin();
-        backgroundManager.render(fruitNinjaGame.batch);
-        titleTextView.draw(fruitNinjaGame.batch);
-        blackoutImageView.draw(fruitNinjaGame.batch);
-        returnButton.draw(fruitNinjaGame.batch);
-        musicSettingView.draw(fruitNinjaGame.batch);
-        soundSettingView.draw(fruitNinjaGame.batch);
-        clearSettingView.draw(fruitNinjaGame.batch);
+        fruitNinjaGame.getBatch().begin();
+        backgroundManager.render(fruitNinjaGame.getBatch());
+        titleTextView.draw(fruitNinjaGame.getBatch());
+        blackoutImageView.draw(fruitNinjaGame.getBatch());
+        returnButton.draw(fruitNinjaGame.getBatch());
+        musicSettingView.draw(fruitNinjaGame.getBatch());
+        soundSettingView.draw(fruitNinjaGame.getBatch());
+        clearSettingView.draw(fruitNinjaGame.getBatch());
 
-        fruitNinjaGame.batch.end();
+        fruitNinjaGame.getBatch().end();
     }
 
     void handleInput() {
         if (Gdx.input.justTouched()) {
-            fruitNinjaGame.touch = fruitNinjaGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            fruitNinjaGame.setTouch(fruitNinjaGame.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
 
-            if (returnButton.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
-                fruitNinjaGame.setScreen(fruitNinjaGame.menuScreen);
+            if (returnButton.isHit(fruitNinjaGame.getTouch().x, fruitNinjaGame.getTouch().y)) {
+                fruitNinjaGame.setScreen(fruitNinjaGame.getMenuScreen());
             }
-            if (clearSettingView.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+            if (clearSettingView.isHit(fruitNinjaGame.getTouch().x, fruitNinjaGame.getTouch().y)) {
                 MemoryManager.saveTableOfRecords(new ArrayList<>());
                 clearSettingView.setText("clear records (cleared)");
             }
-            if (musicSettingView.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+            if (musicSettingView.isHit(fruitNinjaGame.getTouch().x, fruitNinjaGame.getTouch().y)) {
                 MemoryManager.saveMusicSettings(!MemoryManager.loadIsMusicOn());
                 musicSettingView.setText("music: " + translateStateToText(MemoryManager.loadIsMusicOn()));
-                fruitNinjaGame.audioManager.updateMusicFlag();
+                fruitNinjaGame.getAudioManager().updateMusicFlag();
             }
-            if (soundSettingView.isHit(fruitNinjaGame.touch.x, fruitNinjaGame.touch.y)) {
+            if (soundSettingView.isHit(fruitNinjaGame.getTouch().x, fruitNinjaGame.getTouch().y)) {
                 MemoryManager.saveSoundSettings(!MemoryManager.loadIsSoundOn());
                 soundSettingView.setText("sound: " + translateStateToText(MemoryManager.loadIsSoundOn()));
-                fruitNinjaGame.audioManager.updateSoundFlag();
+                fruitNinjaGame.getAudioManager().updateSoundFlag();
             }
         }
     }

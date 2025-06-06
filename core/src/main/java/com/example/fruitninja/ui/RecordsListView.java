@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.example.fruitninja.GameSettings;
 
-
 import java.util.ArrayList;
 
 public class RecordsListView extends TextView {

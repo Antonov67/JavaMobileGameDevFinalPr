@@ -1,4 +1,4 @@
-package com.example.fruitninja.objects;
+package com.example.fruitninja.enums;
 
 public enum GameObjectAfterBladeType {
 

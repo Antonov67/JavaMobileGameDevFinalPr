@@ -6,7 +6,7 @@ import com.example.fruitninja.GameSettings;
 
 public class BackgroundView extends View {
 
-    private Texture texture;
+    private final Texture texture;
 
     public BackgroundView(String pathToTexture) {
         super(0, 0);

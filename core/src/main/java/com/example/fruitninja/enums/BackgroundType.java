@@ -1,5 +1,6 @@
-package com.example.fruitninja.ui;
+package com.example.fruitninja.enums;
 
+//варианты фона игры
 public enum BackgroundType {
 
     BG_1("textures/bg1.png"),

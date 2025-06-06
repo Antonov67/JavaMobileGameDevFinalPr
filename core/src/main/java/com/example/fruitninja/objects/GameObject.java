@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.example.fruitninja.GameSettings;
+import com.example.fruitninja.enums.GameObjectType;
 
 public class GameObject {
     protected final Body body;
@@ -24,7 +25,6 @@ public class GameObject {
     protected float radius;
     protected Sprite sprite;
     protected boolean isBomb;
-    public short cBits;
     protected boolean sliced = false;
     protected GameObjectType type;
     protected int lifetime = GameSettings.LIFE_TIME;
@@ -33,13 +33,12 @@ public class GameObject {
         return texture;
     }
 
-    GameObject(GameObjectType type, int x, int y, World world, short cBits) {
+    GameObject(GameObjectType type, int x, int y, World world) {
 
         this.type = type;
         this.radius = type.radius;
         this.width = (int) (radius * 2);
         this.height = (int) (radius * 2);
-        this.cBits = cBits;
 
         // Создание спрайта
         sprite = new Sprite(new Texture(type.texturePath));
@@ -50,11 +49,10 @@ public class GameObject {
         body = createBody(x, y, world);
     }
 
-    public GameObject(String texturePath, float radius, int x, int y, World world, short cBits, boolean sliced) {
+    public GameObject(String texturePath, float radius, int x, int y, World world, boolean sliced) {
         this.radius = radius;
         this.width = (int) (radius * 2);
         this.height = (int) (radius * 2);
-        this.cBits = cBits;
         this.sliced = sliced;
 
         // Создание спрайта
@@ -84,15 +82,12 @@ public class GameObject {
         body.setBullet(true);
 
         CircleShape circleShape = new CircleShape();
-        //circleShape.setRadius(Math.max(width, height) * SCALE / 2f);
         circleShape.setRadius(radius);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circleShape;
         fixtureDef.density = 0.05f;
         fixtureDef.friction = 1f;
-        //fixtureDef.restitution = 0.3f;
-        fixtureDef.filter.categoryBits = cBits;
 
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
@@ -102,8 +97,8 @@ public class GameObject {
         float impulseX = (float) (Math.random() * 500 + 100);
         float impulseY = (float) (Math.random() * 1000 + 100);
 
-//        if (x > GameSettings.SCREEN_WIDTH / 2 / SCALE) {
-        if (x > GameSettings.SCREEN_WIDTH / 2) {
+
+        if (x > (float) GameSettings.SCREEN_WIDTH / 2) {
             impulseX = -impulseX;
         }
         body.applyLinearImpulse(new Vector2(impulseX, impulseY), body.getWorldCenter(), true);
@@ -112,23 +107,17 @@ public class GameObject {
         //случайное направление и скорость вращения фрукта
         body.setAngularVelocity(MathUtils.random(minAngularVelocity, maxAngularVelocity));
 
-
-        //body.setTransform(x * SCALE, y * SCALE, 0);
-        // body.setTransform(x, y, 0);
         return body;
     }
 
-    public void update(float delta) {
+    public void update() {
         // Обновление позиции спрайта по позиции тела
         Vector2 position = body.getPosition();
         sprite.setPosition(position.x, position.y);
         sprite.setRotation((float) Math.toDegrees(body.getAngle()));
-        if (sliced){
+        if (sliced) {
             lifetime--; // уменьшаем время жизни
         }
-    }
-
-    public void hit() {
     }
 
     public boolean isSliced() {
@@ -140,17 +129,14 @@ public class GameObject {
     }
 
     public boolean isOutOfScreen() {
-        //return getX() < -radius || getX() > GameSettings.SCREEN_WIDTH / SCALE || getY() < -radius;
         return getX() < -radius || getX() > GameSettings.SCREEN_WIDTH + radius || getY() < -radius;
     }
 
     public int getX() {
-        // return (int) (body.getPosition().x / SCALE);
         return (int) (body.getPosition().x);
     }
 
     public int getY() {
-        // return (int) (body.getPosition().y / SCALE);
         return (int) (body.getPosition().y);
     }
 
